@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.template import loader
 from django.core.mail import EmailMultiAlternatives
+from django.conf import settings
 # Create your views here.
 
 
@@ -9,7 +10,7 @@ def HomeView(request):
     context = {
       'h': 'Hello world with django'
     }
-    return render(request, 'email.html', context)
+    return render(request, 'index.html', context)
 
 
 # Function to send data to email (gmail)
@@ -21,16 +22,17 @@ def send_mail(request):
 
   context = {
     'name' :'Demo name', 
-    'email' :'kadiwala.530@email.com', 
+    'email' :'kadiwala.530@email.com',  # from   send email
     'courses': 'Python',  
   }
 
   message = template.render(context)
 
   email = EmailMultiAlternatives(
-  "Mastery Courses", message, 
-  "Congratulation" + "- A gift to you", 
-  ['kadiwala.530@gmail.com'])
+      "Quotation Alert", message, 
+      "Quotation Details" + " - from", 
+      [settings.EMAIL_HOST_USER], # to send email
+  )
 
   # Convert the html and css Inside the email.content_subtype = 'html'
   email.content_subtype = 'html'
